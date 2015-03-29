@@ -2,7 +2,11 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="android:buttonStyle">@style/CustomButton</item>
     </style>
 
+    <!-- all buttons in the application styled here (with the button_selector.xml drawable): -->
+    <style name="CustomButton" parent="Base.Widget.AppCompat.ActionButton">
+        <item name="android:background">@drawable/button_selector</item>
+    </style>
 </resources>
