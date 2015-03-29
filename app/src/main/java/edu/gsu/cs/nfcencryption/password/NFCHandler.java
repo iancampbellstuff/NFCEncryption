@@ -1,4 +1,4 @@
-package edu.gsu.cs.nfcencryption.nfc;
+package edu.gsu.cs.nfcencryption.password;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,15 +8,14 @@ import java.util.UUID;
 
 import edu.gsu.cs.nfcencryption.database.LocalDatabase;
 import edu.gsu.cs.nfcencryption.database.PasswordTable;
-import edu.gsu.cs.nfcencryption.encryption.EncryptedPassword;
-import edu.gsu.cs.nfcencryption.encryption.EncryptionAlgorithm;
 
 /**
+ * <em>package-access</em> only.
  *
  * @author Ian A. Campbell
  * @author Andrew J. Rutherford
  */
-public final class NFCHandler {
+final class NFCHandler {
     
     /**
      * <code>private</code>, to prevent outside instantiation.
@@ -103,10 +102,11 @@ public final class NFCHandler {
     }
 
     /**
+     * <em>package-access</em> only.
      *
      * @throws Throwable
      */
-    public static void removePassword() throws Throwable {
+    static void removePassword() throws Throwable {
         SQLiteDatabase writableDB = LocalDatabase.getInstanceOf().getWritableDatabase();
 
         writableDB.beginTransaction();
@@ -128,10 +128,11 @@ public final class NFCHandler {
     }
 
     /**
+     * <em>package-access</em> only.
      *
      * @throws Throwable
      */
-    public static void updatePassword() throws Throwable {
+    static void updatePassword() throws Throwable {
         char[] password = getRandomPassword();
         SQLiteDatabase writableDB = LocalDatabase.getInstanceOf().getWritableDatabase();
 
@@ -154,11 +155,12 @@ public final class NFCHandler {
     }
 
     /**
+     * <em>package-access</em> only.
      *
      * @return
      * @throws Throwable
      */
-    public static boolean passwordMatches() throws Throwable {
+    static boolean passwordMatches() throws Throwable {
         // getting the stored password from the NFC device:
         char[] password = getPasswordFromDevice();
         if (password == null) {

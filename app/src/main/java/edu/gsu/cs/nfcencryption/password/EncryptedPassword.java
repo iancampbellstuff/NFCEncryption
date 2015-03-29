@@ -1,4 +1,4 @@
-package edu.gsu.cs.nfcencryption.encryption;
+package edu.gsu.cs.nfcencryption.password;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -8,12 +8,14 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 /**
+ * <em>package-access</em> only.
+ *
  * See <a href="http://stackoverflow.com/a/18143616">this stackoverflow answer</a> for reference.
  *
  * @author Ian A. Campbell
  * @author Andrew J. Rutherford
  */
-public final class EncryptedPassword {
+final class EncryptedPassword {
 
     /**
      * An <code>enum</code> instance that contains fields necessary for the
@@ -59,26 +61,29 @@ public final class EncryptedPassword {
     }
 
     /**
+     * <em>package-access</em> only.
      *
      * @return
      */
-    public byte[] getSalt() {
+    byte[] getSalt() {
         return this.salt;
     }
 
     /**
+     * <em>package-access</em> only.
      *
      * @return
      */
-    public byte[] getHash() {
+    byte[] getHash() {
         return this.hash;
     }
 
     /**
+     * <em>package-access</em> only.
      *
      * @return
      */
-    public String getAlgorithmType() {
+    String getAlgorithmType() {
         return this.encryptionAlgorithm.getType();
     }
 
@@ -118,11 +123,12 @@ public final class EncryptedPassword {
     }
 
     /**
+     * <em>package-access</em> only.
      *
      * @param password
      * @return
      */
-    public boolean matches(char[] password) {
+    boolean matches(char[] password) {
         byte[] passwordHash = this.getHash(password, this.salt);
 
         if (passwordHash.length != this.hash.length) {

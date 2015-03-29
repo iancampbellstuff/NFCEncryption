@@ -1,11 +1,12 @@
-package edu.gsu.cs.nfcencryption.encryption;
+package edu.gsu.cs.nfcencryption.password;
 
 /**
+ * <em>package-access</em> only.
  *
  * @author Ian A. Campbell
  * @author Andrew J. Rutherford
  */
-public enum EncryptionAlgorithm {
+enum EncryptionAlgorithm {
 
     /**
      * See the <a href="https://en.wikipedia.org/wiki/PBKDF2">Wikipedia page on <em>PBKDF2</em></a>
