@@ -1,39 +1,60 @@
 package edu.gsu.cs.nfcencryption;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
+import edu.gsu.cs.nfcencryption.password.RemovePasswordActivity;
+import edu.gsu.cs.nfcencryption.password.TestPasswordActivity;
+import edu.gsu.cs.nfcencryption.password.UpdatePasswordActivity;
 
-public class MainActivity extends ActionBarActivity {
+/**
+ *
+ */
+public final class MainActivity extends Activity {
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
+        // remove password button here:
+        Button btnRemovePassword = (Button)this.findViewById(R.id.btnRemovePassword);
+        btnRemovePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // switching activites here:
+                Intent intent = new Intent(MainActivity.this, RemovePasswordActivity.class);
+                startActivity(intent);
+            }
+        });
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+        // update password button here:
+        Button btnUpdatePassword = (Button)this.findViewById(R.id.btnUpdatePassword);
+        btnUpdatePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // switching activites here:
+                Intent intent = new Intent(MainActivity.this, UpdatePasswordActivity.class);
+                startActivity(intent);
+            }
+        });
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        // test password button here:
+        Button btnTestPassword = (Button)this.findViewById(R.id.btnTestPassword);
+        btnTestPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // switching activites here:
+                Intent intent = new Intent(MainActivity.this, TestPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -2,6 +2,20 @@
     <string name="app_name">NFCEncryption</string>
     <string name="action_settings">Settings</string>
 
+    <!-- main activity strings here: -->
+    <string name="removePassword">Remove Password…</string>
+    <string name="updatePassword">Update Password…</string>
+    <string name="testPassword">Test Password…</string>
+
+    <!-- remove password activity strings here: -->
+    <string name="title_activity_remove_password">RemovePasswordActivity</string>
+
+    <!-- update password activity strings here: -->
+    <string name="title_activity_update_password">UpdatePasswordActivity</string>
+
+    <!-- test password activity strings here: -->
+    <string name="title_activity_test_password">TestPasswordActivity</string>
+
     <!-- util strings here: -->
     <string name="error_occurred">
         An error has occurred \u2014 please contact your provider for further assistence, sorry for the inconvenience.
