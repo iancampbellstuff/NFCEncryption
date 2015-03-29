@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import edu.gsu.cs.nfcencryption.ApplicationContext;
+import edu.gsu.cs.nfcencryption.util.ApplicationContext;
 import edu.gsu.cs.nfcencryption.util.ErrorHandler;
 
 /**
@@ -55,7 +55,7 @@ public final class LocalDatabase extends SQLiteOpenHelper {
     }
 
     /**
-     * Here using <code></code>{@link edu.gsu.cs.nfcencryption.ApplicationContext#getInstanceOf()
+     * Here using <code></code>{@link edu.gsu.cs.nfcencryption.util.ApplicationContext#getInstanceOf()
      * ApplicationContext.getInstanceOf()}</code>.
      *
      * @return

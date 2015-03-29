@@ -1,4 +1,4 @@
-package edu.gsu.cs.nfcencryption;
+package edu.gsu.cs.nfcencryption.util;
 
 import android.app.Application;
 import android.content.Context;
