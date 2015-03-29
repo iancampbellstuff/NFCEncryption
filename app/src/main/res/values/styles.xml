@@ -5,6 +5,10 @@
         <item name="android:buttonStyle">@style/CustomButton</item>
     </style>
 
+    <!-- http://www.w3schools.com/tags/ref_colorpicker.asp was used to find these colors: -->
+    <color name="LightBlue">#0066FF</color>
+    <color name="DarkBlue">#0066CC</color>
+
     <!-- all buttons in the application styled here (with the button_selector.xml drawable): -->
     <style name="CustomButton" parent="Base.Widget.AppCompat.ActionButton">
         <item name="android:background">@drawable/button_selector</item>

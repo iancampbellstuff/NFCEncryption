@@ -2,17 +2,17 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_selected="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/material_blue_grey_950" />
+            <solid android:color="@color/DarkBlue" />
         </shape>
     </item>
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/material_blue_grey_950" />
+            <solid android:color="@color/DarkBlue" />
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/material_blue_grey_800" />
+            <solid android:color="@color/LightBlue" />
         </shape>
     </item>
 </selector>
