@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">NFCEncryption</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- util strings here: -->
+    <string name="error_occurred">
+        An error has occurred \u2014 please contact your provider for further assistence, sorry for the inconvenience.
+    </string>
+</resources>
