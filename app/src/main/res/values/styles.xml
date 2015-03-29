@@ -6,8 +6,8 @@
     </style>
 
     <!-- http://www.w3schools.com/tags/ref_colorpicker.asp was used to find these colors: -->
-    <color name="LightBlue">#0066FF</color>
-    <color name="DarkBlue">#0066CC</color>
+    <color name="Grey">#6B6B6B</color>
+    <color name="DarkGrey">#3A3A3A</color>
 
     <!-- all buttons in the application styled here (with the button_selector.xml drawable): -->
     <style name="CustomButton" parent="Base.Widget.AppCompat.ActionButton">
