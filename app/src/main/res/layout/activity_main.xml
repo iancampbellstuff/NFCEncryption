@@ -21,7 +21,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/abc_text_size_button_material"
             android:layout_marginBottom="@dimen/abc_text_size_button_material"
-            android:text="@string/removePassword"
+            android:text="@string/remove_password"
             android:textColor="@color/background_floating_material_light"
             android:textSize="18dp"
             android:gravity="center" />
@@ -32,7 +32,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/abc_text_size_button_material"
             android:layout_marginBottom="@dimen/abc_text_size_button_material"
-            android:text="@string/updatePassword"
+            android:text="@string/update_password"
             android:textColor="@color/background_floating_material_light"
             android:textSize="18dp"
             android:gravity="center" />
@@ -43,7 +43,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/abc_text_size_button_material"
             android:layout_marginBottom="@dimen/abc_text_size_button_material"
-            android:text="@string/testPassword"
+            android:text="@string/test_password"
             android:textColor="@color/background_floating_material_light"
             android:textSize="18dp"
             android:gravity="center" />

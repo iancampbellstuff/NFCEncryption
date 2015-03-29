@@ -3,18 +3,17 @@
     <string name="action_settings">Settings</string>
 
     <!-- main activity strings here: -->
-    <string name="removePassword">Remove Password…</string>
-    <string name="updatePassword">Update Password…</string>
-    <string name="testPassword">Test Password…</string>
+    <string name="remove_password">Remove Password…</string>
+    <string name="update_password">Update Password…</string>
+    <string name="test_password">Test Password…</string>
 
-    <!-- remove password activity strings here: -->
+    <!-- password activity strings here: -->
     <string name="title_activity_remove_password">RemovePasswordActivity</string>
-
-    <!-- update password activity strings here: -->
     <string name="title_activity_update_password">UpdatePasswordActivity</string>
-
-    <!-- test password activity strings here: -->
     <string name="title_activity_test_password">TestPasswordActivity</string>
+    <string name="tap_nfc_device_to_continue">Tap NFC Device\nTo Continue…</string>
+    <string name="check_mark">&#x2713;</string>
+    <string name="x_mark">&#x2717;</string>
 
     <!-- util strings here: -->
     <string name="error_occurred">

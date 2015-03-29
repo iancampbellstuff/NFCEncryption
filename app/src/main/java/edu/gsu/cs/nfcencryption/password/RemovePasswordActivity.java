@@ -19,6 +19,6 @@ public final class RemovePasswordActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_remove_password);
+        setContentView(R.layout.activity_password_start);
     }
 }

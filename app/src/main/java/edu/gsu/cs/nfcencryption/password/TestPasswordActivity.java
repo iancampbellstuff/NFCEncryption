@@ -19,6 +19,6 @@ public final class TestPasswordActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test_password);
+        setContentView(R.layout.activity_password_start);
     }
 }
