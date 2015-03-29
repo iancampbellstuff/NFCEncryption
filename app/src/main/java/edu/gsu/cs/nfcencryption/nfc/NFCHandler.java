@@ -10,7 +10,6 @@ import edu.gsu.cs.nfcencryption.database.LocalDatabase;
 import edu.gsu.cs.nfcencryption.database.PasswordTable;
 import edu.gsu.cs.nfcencryption.encryption.EncryptedPassword;
 import edu.gsu.cs.nfcencryption.encryption.EncryptionAlgorithm;
-import edu.gsu.cs.nfcencryption.util.ErrorHandler;
 
 /**
  *
@@ -105,19 +104,34 @@ public final class NFCHandler {
 
     /**
      *
+     * @throws Throwable
      */
-    public static void removePassword() {
-        // removing the password from the NFC device:
-        //TODO: this needs to be implemented
+    public static void removePassword() throws Throwable {
+        SQLiteDatabase writableDB = LocalDatabase.getInstanceOf().getWritableDatabase();
 
-        // deleting the existing password from the database (if there is one):
-        LocalDatabase.getInstanceOf().executeInTransaction("TRUNCATE TABLE " + PasswordTable.NAME + ";");
+        writableDB.beginTransaction();
+        try {
+            // removing the password from the NFC device:
+            //TODO: this needs to be implemented
+
+            // deleting the existing password from the database (if there is one):
+            LocalDatabase.getInstanceOf().executeInTransaction("TRUNCATE TABLE " + PasswordTable.NAME + ";");
+
+            writableDB.setTransactionSuccessful();
+
+        } catch (Throwable e) {
+            throw e;
+
+        } finally {
+            writableDB.endTransaction();
+        }
     }
 
     /**
      *
+     * @throws Throwable
      */
-    public static void updatePassword() {
+    public static void updatePassword() throws Throwable {
         char[] password = getRandomPassword();
         SQLiteDatabase writableDB = LocalDatabase.getInstanceOf().getWritableDatabase();
 
@@ -125,13 +139,14 @@ public final class NFCHandler {
         try {
             updateDatabase(writableDB, password);
             updateDevice(password);
-            writableDB.setTransactionSuccessful();
 
             // clearing the password char array (a Java security best-practice):
             Arrays.fill(password, Character.MIN_VALUE);
 
+            writableDB.setTransactionSuccessful();
+
         } catch (Throwable e) {
-            ErrorHandler.handle(e);
+            throw e;
 
         } finally {
             writableDB.endTransaction();
@@ -141,17 +156,16 @@ public final class NFCHandler {
     /**
      *
      * @return
+     * @throws Throwable
      */
-    public static boolean passwordMatches() {
+    public static boolean passwordMatches() throws Throwable {
         // getting the stored password from the NFC device:
         char[] password = getPasswordFromDevice();
         if (password == null) {
-            ErrorHandler.handle(new IllegalStateException(String.format("%s %s%n",
+            throw new IllegalStateException(String.format("%s %s%n",
                     "The NFC device must have a stored password before calling passwordMatches()!",
                     "updatePassword() must be called first."
-            )));
-
-            return false;
+            ));
         }
 
         boolean result = false;
@@ -178,10 +192,10 @@ public final class NFCHandler {
             result = new EncryptedPassword(salt, hash, algorithmType).matches(password);
 
         } else {
-            ErrorHandler.handle(new IllegalStateException(String.format("%s %s%n",
+            throw new IllegalStateException(String.format("%s %s%n",
                     "The NFC device has a stored password, but the local database is empty!",
                     "updatePassword() must be called before passwordMatches()."
-            )));
+            ));
         }
 
         // clearing the password char array (a Java security best-practice):
