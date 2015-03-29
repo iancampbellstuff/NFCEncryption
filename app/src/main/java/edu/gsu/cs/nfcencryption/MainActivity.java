@@ -12,6 +12,8 @@ import edu.gsu.cs.nfcencryption.password.UpdatePasswordActivity;
 
 /**
  *
+ * @author Ian A. Campbell
+ * @author Andrew J. Rutherford
  */
 public final class MainActivity extends Activity {
 

@@ -7,6 +7,8 @@ import edu.gsu.cs.nfcencryption.R;
 
 /**
  *
+ * @author Ian A. Campbell
+ * @author Andrew J. Rutherford
  */
 public final class RemovePasswordActivity extends Activity {
 
