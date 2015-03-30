@@ -6,7 +6,6 @@ import android.nfc.NfcEvent;
 import android.os.Bundle;
 
 import edu.gsu.cs.nfcencryption.R;
-import edu.gsu.cs.nfcencryption.database.LocalDatabase;
 import edu.gsu.cs.nfcencryption.database.PasswordTable;
 
 /**
@@ -58,7 +57,7 @@ public final class RemovePasswordActivity extends PasswordActivity {
      * @throws Throwable
      */
     private void removePassword() throws Throwable {
-        SQLiteDatabase writableDB = LocalDatabase.getInstanceOf().getWritableDatabase();
+        SQLiteDatabase writableDB = this.db.getWritableDatabase();
 
         writableDB.beginTransaction();
         try {
@@ -66,7 +65,7 @@ public final class RemovePasswordActivity extends PasswordActivity {
             //TODO: this needs to be implemented
 
             // deleting the existing password from the database (if there is one):
-            LocalDatabase.getInstanceOf().executeInTransaction("TRUNCATE TABLE " + PasswordTable.NAME + ";");
+            writableDB.execSQL("TRUNCATE TABLE " + PasswordTable.NAME + ";");
 
             writableDB.setTransactionSuccessful();
 

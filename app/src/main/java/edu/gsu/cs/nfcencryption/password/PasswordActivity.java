@@ -7,6 +7,7 @@ import android.nfc.NfcEvent;
 import android.os.Bundle;
 
 import edu.gsu.cs.nfcencryption.R;
+import edu.gsu.cs.nfcencryption.database.LocalDatabase;
 
 /**
  *
@@ -15,6 +16,11 @@ import edu.gsu.cs.nfcencryption.R;
  */
 abstract class PasswordActivity extends Activity
         implements NfcAdapter.CreateNdefMessageCallback, NfcAdapter.OnNdefPushCompleteCallback {
+
+    /**
+     *
+     */
+    protected LocalDatabase db;
 
     /**
      *
@@ -55,9 +61,11 @@ abstract class PasswordActivity extends Activity
                 );
             } else {
                 setContentView(R.layout.activity_password_start);
+                this.db = LocalDatabase.getInstanceOf(this);
             }
         } else {
             setContentView(R.layout.activity_password_start);
+            this.db = LocalDatabase.getInstanceOf(this);
         }
     }
 

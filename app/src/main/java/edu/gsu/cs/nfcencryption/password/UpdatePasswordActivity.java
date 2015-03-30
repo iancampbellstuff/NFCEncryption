@@ -8,7 +8,6 @@ import android.os.Bundle;
 import java.util.Arrays;
 import java.util.UUID;
 
-import edu.gsu.cs.nfcencryption.database.LocalDatabase;
 import edu.gsu.cs.nfcencryption.database.PasswordTable;
 
 /**
@@ -77,7 +76,7 @@ public final class UpdatePasswordActivity extends PasswordActivity {
      */
     private void updatePassword() throws Throwable {
         char[] password = getRandomPassword();
-        SQLiteDatabase writableDB = LocalDatabase.getInstanceOf().getWritableDatabase();
+        SQLiteDatabase writableDB = this.db.getWritableDatabase();
 
         writableDB.beginTransaction();
         try {

@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.UUID;
 
 import edu.gsu.cs.nfcencryption.R;
-import edu.gsu.cs.nfcencryption.database.LocalDatabase;
 import edu.gsu.cs.nfcencryption.database.PasswordTable;
 
 /**
@@ -92,7 +91,7 @@ public final class TestPasswordActivity extends PasswordActivity {
          * getting the corresponding password info from the database (see
          * http://stackoverflow.com/a/5408253/1298685 for reference):
          */
-        Cursor c = LocalDatabase.getInstanceOf().getReadableDatabase().rawQuery(
+        Cursor c = this.db.getReadableDatabase().rawQuery(
                 "SELECT " + PasswordTable.Columns.SALT + ", " +
                         PasswordTable.Columns.HASH + ", " +
                         PasswordTable.Columns.ALGORITHM_TYPE +
