@@ -4,7 +4,8 @@
 
     <!--
         see http://www.developer.com/ws/android/nfc-programming-in-android.html for reference (note
-        that the minimum SDK version must be set as 10 in build.gradle (Module: app) for this to work):
+        that the minimum API version must be set as 10 in build.gradle (Module: app) for this to work,
+        and that classes being used from the nfc package require a minimum API version 14):
     -->
     <uses-feature
         android:name="android.hardware.nfc"
