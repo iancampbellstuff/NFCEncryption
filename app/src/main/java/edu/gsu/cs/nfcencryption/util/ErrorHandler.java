@@ -5,7 +5,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import edu.gsu.cs.nfcencryption.R;
-import edu.gsu.cs.nfcencryption.database.LocalDatabase;
 
 /**
  * Contains convenience methods for error-handling, to be used throughout the application.
@@ -40,26 +39,6 @@ public final class ErrorHandler {
      */
     public static void handle(Throwable e) {
         Log.wtf(ERROR_TAG, e);
-    }
-
-    /**
-     *
-     * @param errorMessage
-     */
-    public static void handleAndExit(String errorMessage) {
-        handle(errorMessage);
-        LocalDatabase.getInstanceOf().closeConnection();
-        System.exit(-1); // "-1", for abnormal-termination status
-    }
-
-    /**
-     *
-     * @param e
-     */
-    public static void handleAndExit(Throwable e) {
-        handle(e);
-        LocalDatabase.getInstanceOf().closeConnection();
-        System.exit(-1); // "-1", for abnormal-termination status
     }
 
     /**
