@@ -10,7 +10,6 @@
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
-
     <uses-permission android:name="android.permission.NFC" />
 
     <application
@@ -29,32 +28,56 @@
         <activity
             android:name=".password.RemovePasswordActivity"
             android:label="@string/title_activity_remove_password" >
+
+            <!-- see https://developer.android.com/guide/topics/connectivity/nfc/nfc.html#tech-disc for reference: -->
             <intent-filter>
-                <!-- see http://www.developer.com/ws/android/nfc-programming-in-android.html for reference: -->
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
         </activity>
         <activity
             android:name=".password.UpdatePasswordActivity"
             android:label="@string/title_activity_update_password" >
+
+            <!-- see https://developer.android.com/guide/topics/connectivity/nfc/nfc.html#tech-disc for reference: -->
             <intent-filter>
-                <!-- see http://www.developer.com/ws/android/nfc-programming-in-android.html for reference: -->
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
         </activity>
         <activity
             android:name=".password.TestPasswordActivity"
             android:label="@string/title_activity_test_password" >
+
+            <!-- see https://developer.android.com/guide/topics/connectivity/nfc/nfc.html#tech-disc for reference: -->
             <intent-filter>
-                <!-- see http://www.developer.com/ws/android/nfc-programming-in-android.html for reference: -->
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
         </activity>
     </application>
 
