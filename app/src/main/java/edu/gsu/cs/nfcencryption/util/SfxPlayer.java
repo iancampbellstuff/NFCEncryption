@@ -72,16 +72,24 @@ public final class SfxPlayer {
     public void playAlarmSound() {
         try {
             Uri alarm = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-            Ringtone ringtone = RingtoneManager.getRingtone(this.applicationContext, alarm);
-            ringtone.play();
+            final Ringtone ringtone = RingtoneManager.getRingtone(this.applicationContext, alarm);
 
-            // waiting some brief amount of time before stopping the sound:
-            long duration = 1000,
-                    startTime = System.currentTimeMillis(), stopTime = startTime + duration;
-            do {
-                startTime = System.currentTimeMillis();
-            } while (ringtone.isPlaying() && startTime < stopTime);
-            ringtone.stop();
+            synchronized(this) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        ringtone.play();
+
+                        // waiting some brief amount of time before stopping the sound:
+                        long duration = 1000,
+                                startTime = System.currentTimeMillis(), stopTime = startTime + duration;
+                        do {
+                            startTime = System.currentTimeMillis();
+                        } while (ringtone.isPlaying() && startTime < stopTime);
+                        ringtone.stop();
+                    }
+                }.start();
+            }
 
         } catch (Exception e) {
             ErrorHandler.handle(e);
