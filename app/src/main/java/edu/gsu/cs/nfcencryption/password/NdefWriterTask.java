@@ -7,8 +7,6 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 
-import java.util.Arrays;
-
 import edu.gsu.cs.nfcencryption.R;
 
 /**
@@ -55,13 +53,13 @@ final class NdefWriterTask extends AsyncTask<Tag, Void, Void> {
      */
     private NdefRecord getNdefRecord() throws Throwable {
         String language = "en";
-        byte[] passwordBytes = Arrays.toString(this.password).getBytes();
+        byte[] passwordBytes = new String(this.password).getBytes();
         byte[] languageBytes = language.getBytes("US-ASCII");
         int passwordLength = passwordBytes.length;
         int languageLength = languageBytes.length;
         byte[] payload = new byte[1 + passwordLength + languageLength];
 
-        // setting a "status byte" here (see NDEF spec for actual bits)
+        // setting a "status byte" here (see http://members.nfc-forum.org/specs/spec_list/#ndefts):
         payload[0] = (byte) languageLength;
 
         // copying language and password bytes into payload here:
@@ -130,7 +128,7 @@ final class NdefWriterTask extends AsyncTask<Tag, Void, Void> {
             if (this.throwable != null) {
                 throw this.throwable;
 
-            } if (!this.isCancelled()) {
+            } else if (!this.isCancelled()) {
 
                 // notifying the implementing activity here:
                 this.delegate.onWriteSuccess();
