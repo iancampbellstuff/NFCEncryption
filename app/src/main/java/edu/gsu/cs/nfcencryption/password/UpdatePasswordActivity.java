@@ -1,58 +1,25 @@
 package edu.gsu.cs.nfcencryption.password;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.nfc.NdefMessage;
-import android.nfc.NfcEvent;
-import android.os.Bundle;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.Ndef;
 
-import java.util.Arrays;
 import java.util.UUID;
 
+import edu.gsu.cs.nfcencryption.R;
 import edu.gsu.cs.nfcencryption.database.PasswordTable;
+import edu.gsu.cs.nfcencryption.util.ErrorHandler;
+import edu.gsu.cs.nfcencryption.util.SfxPlayer;
 
 /**
  *
  * @author Ian A. Campbell
  * @author Andrew J. Rutherford
  */
-public final class UpdatePasswordActivity extends PasswordActivity {
-
-    /**
-     *
-     * @param savedInstanceState
-     */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (this.isFinished) {
-            if (this.wasSuccessful) {
-
-
-            } else {
-
-            }
-        }
-    }
-
-    /**
-     *
-     * @param event
-     * @return
-     */
-    @Override
-    public NdefMessage createNdefMessage(NfcEvent event) {
-        return null;
-    }
-
-    /**
-     *
-     * @param event
-     */
-    @Override
-    public void onNdefPushComplete(NfcEvent event) {
-
-    }
+public final class UpdatePasswordActivity extends PasswordActivity
+        implements PasswordActivity.NdefWriterListener {
 
     /**
      * Using the <code>char[]</code> value of a random <code>UUID</code> as a "<em>password</em>".
@@ -72,19 +39,34 @@ public final class UpdatePasswordActivity extends PasswordActivity {
 
     /**
      *
+     * @param nfcTag
      * @throws Throwable
      */
-    private void updatePassword() throws Throwable {
+    private void updatePassword(Tag nfcTag) throws Throwable {
         char[] password = getRandomPassword();
         SQLiteDatabase writableDB = this.db.getWritableDatabase();
 
         writableDB.beginTransaction();
         try {
-            updateDatabase(writableDB, password);
-            updateDevice(password);
+            // first deleting the existing password (if there is one):
+            writableDB.execSQL("DELETE FROM " + PasswordTable.NAME + ";");
 
-            // clearing the password char array (a Java security best-practice):
-            Arrays.fill(password, Character.MIN_VALUE);
+            // saving the corresponding encryption to the database:
+            EncryptedPassword encryptedPassword = new EncryptedPassword(password, EncryptionAlgorithm.PBKDF2WithHmacSHA1);
+            writableDB.execSQL("INSERT INTO " + PasswordTable.NAME + " (" +
+                            PasswordTable.Columns.SALT + ", " +
+                            PasswordTable.Columns.HASH + ", " +
+                            PasswordTable.Columns.ALGORITHM_TYPE +
+                            ") VALUES (?, ?, ?);",
+                    new Object[]{
+                            encryptedPassword.getSalt(),
+                            encryptedPassword.getHash(),
+                            encryptedPassword.getAlgorithmType()
+                    }
+            );
+
+            // writing to the NFC tag here:
+            new NdefWriterTask(this, password).execute(nfcTag);
 
             writableDB.setTransactionSuccessful();
 
@@ -97,51 +79,62 @@ public final class UpdatePasswordActivity extends PasswordActivity {
     }
 
     /**
-     * Note that this method must be executed within a <em>transaction</em>, using the the passed
-     * <code>LocalDatabase</code> parameter.
+     * This method is called by the <strong>Android OS</strong> when an <strong>NFC</strong> device
+     * is detected.
      *
-     * @param password retrieved from
-     * <code>{@link edu.gsu.cs.nfcencryption.password.UpdatePasswordActivity#getRandomPassword()
-     * -getRandomPassword():char[]}</code>.
+     * See <a href="http://code.tutsplus.com/tutorials/reading-nfc-tags-with-android--mobile-17278">
+     * http://code.tutsplus.com/tutorials/reading-nfc-tags-with-android--mobile-17278</a> for reference.
+     *
+     * @param intent
      */
-    private void updateDatabase(SQLiteDatabase writableDB, char[] password) {
-        if (password == null) {
-            throw new IllegalArgumentException(
-                    "The password passed to updateDatabase() must not be null!"
-            );
-        }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        String intentAction = intent.getAction();
 
-        // first deleting the existing password (if there is one):
-        writableDB.execSQL("TRUNCATE TABLE " + PasswordTable.NAME + ";");
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intentAction)
+        || NfcAdapter.ACTION_TECH_DISCOVERED.equals(intentAction)) {
 
-        // saving the corresponding encryption to the database:
-        EncryptedPassword encryptedPassword = new EncryptedPassword(password, EncryptionAlgorithm.PBKDF2);
-        writableDB.execSQL("INSERT INTO " + PasswordTable.NAME + " (" +
-                        PasswordTable.Columns.SALT + ", " +
-                        PasswordTable.Columns.HASH + ", " +
-                        PasswordTable.Columns.ALGORITHM_TYPE +
-                        ") VALUES (?, ?, ?);",
-                new Object[]{
-                        encryptedPassword.getSalt(),
-                        encryptedPassword.getHash(),
-                        encryptedPassword.getAlgorithmType()
+            Tag nfcTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            String[] techList = nfcTag.getTechList();
+            String ndefTech = Ndef.class.getName();
+
+            for (String tech : techList) {
+                if (ndefTech.equals(tech)) {
+                    try {
+                        this.updatePassword(nfcTag);
+                        break;
+
+                    } catch (Throwable e) {
+                        ErrorHandler.handle(e.getLocalizedMessage());
+                        this.setFinishedLayout(false, e.getLocalizedMessage());
+                        break;
+                    }
                 }
-        );
+            }
+        } else {
+            String errorMessage = this.getResources().getString(R.string.unsupported_intent_action, intentAction);
+            ErrorHandler.handle(errorMessage);
+            this.setFinishedLayout(false, errorMessage);
+        }
     }
 
     /**
      *
-     * @param password retrieved from
-     * <code>{@link edu.gsu.cs.nfcencryption.password.UpdatePasswordActivity#getRandomPassword()
-     * -getRandomPassword():char[]}</code>.
      */
-    private void updateDevice(char[] password) {
-        if (password == null) {
-            throw new IllegalArgumentException(
-                    "The password passed to updateDevice() must not be null!"
-            );
-        }
+    @Override
+    public void onWriteSuccess() {
+        SfxPlayer.getInstanceOf(this).playNotificationSound();
+        this.setFinishedLayout(true, R.string.password_update_successful);
+    }
 
-        //TODO: this needs to be implemented
+    /**
+     *
+     * @param e
+     */
+    @Override
+    public void onWriteFail(Throwable e) {
+        ErrorHandler.handle(e.getLocalizedMessage());
+        SfxPlayer.getInstanceOf(this).playAlarmSound();
+        this.setFinishedLayout(false, e.getLocalizedMessage());
     }
 }

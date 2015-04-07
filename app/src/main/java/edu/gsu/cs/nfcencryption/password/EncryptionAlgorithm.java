@@ -12,7 +12,7 @@ enum EncryptionAlgorithm {
      * See the <a href="https://en.wikipedia.org/wiki/PBKDF2">Wikipedia page on <em>PBKDF2</em></a>
      * for reference.
      */
-    PBKDF2("PBKDF2WithHmacSHA1", 10000, 256);
+    PBKDF2WithHmacSHA1("PBKDF2WithHmacSHA1", 100, 256);
 
     /**
      *

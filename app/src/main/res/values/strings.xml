@@ -15,6 +15,20 @@
     <string name="tap_nfc_device_to_continue">Tap NFC Device\nTo Continue</string>
     <string name="check_mark">&#x2713;</string>
     <string name="x_mark">&#x2717;</string>
+    <string name="password_removal_successful">Password removal successful.</string>
+    <string name="password_update_successful">Password update successful.</string>
+
+    <!-- password activity error messages: -->
+    <string name="nfc_not_available">Sorry, NFC is not available for this device.</string>
+    <string name="nfc_not_enabled">NFC is not enabled on this device, please enable and try again.</string>
+    <string name="ndef_not_supported">NDEF is not supported by this NFC tag.</string>
+    <string name="unsupported_mime_type">The mime type %1$s is not supported.</string>
+    <string name="unsupported_intent_action">The intent action %1$s is not supported.</string>
+    <string name="nfc_tag_empty">The NFC tag is currently empty.</string>
+    <string name="password_matches">The NFC password %1$s is a match.</string>
+    <string name="password_does_not_match">The NFC password %1$s does not match!</string>
+    <string name="nfc_tag_not_writable">The NFC tag is read-only / cannot be written to.</string>
+    <string name="nfc_tag_max_size_exceeded">The NFC tag\'s max-size of %1$d has been reached.</string>
 
     <!-- util strings here: -->
     <string name="error_occurred">
