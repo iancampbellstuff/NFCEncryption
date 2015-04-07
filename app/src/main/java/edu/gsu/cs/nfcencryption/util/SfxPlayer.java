@@ -10,7 +10,7 @@ import android.net.Uri;
  * @author Ian A. Campbell
  * @author Andrew J. Rutherford
  */
-public final class SFXPlayer {
+public final class SfxPlayer {
 
     /**
      * Set as the application-applicationContext from the first-passed <code>Context</code> when the
@@ -21,13 +21,13 @@ public final class SFXPlayer {
     /**
      * Used for a <em>Singleton</em> implementation.
      */
-    private static SFXPlayer INSTANCE;
+    private static SfxPlayer INSTANCE;
 
     /**
      * <code>private</code> for a <em>Singleton</em> implementation.
      * @param context
      */
-    private SFXPlayer(Context context) {
+    private SfxPlayer(Context context) {
         this.applicationContext = context.getApplicationContext();
     }
 
@@ -36,9 +36,9 @@ public final class SFXPlayer {
      * @param context
      * @return a <em>Singleton</em> instance of this class.
      */
-    public static SFXPlayer getInstanceOf(Context context) {
+    public static SfxPlayer getInstanceOf(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = new SFXPlayer(context);
+            INSTANCE = new SfxPlayer(context);
         }
 
         return INSTANCE;
