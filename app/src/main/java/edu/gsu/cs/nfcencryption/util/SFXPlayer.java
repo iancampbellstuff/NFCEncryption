@@ -1,0 +1,90 @@
+package edu.gsu.cs.nfcencryption.util;
+
+import android.content.Context;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+
+/**
+ *
+ * @author Ian A. Campbell
+ * @author Andrew J. Rutherford
+ */
+public final class SFXPlayer {
+
+    /**
+     * Set as the application-applicationContext from the first-passed <code>Context</code> when the
+     * <em>Singleton</em> is instantiated.
+     */
+    private final Context applicationContext;
+
+    /**
+     * Used for a <em>Singleton</em> implementation.
+     */
+    private static SFXPlayer INSTANCE;
+
+    /**
+     * <code>private</code> for a <em>Singleton</em> implementation.
+     * @param context
+     */
+    private SFXPlayer(Context context) {
+        this.applicationContext = context.getApplicationContext();
+    }
+
+    /**
+     *
+     * @param context
+     * @return a <em>Singleton</em> instance of this class.
+     */
+    public static SFXPlayer getInstanceOf(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = new SFXPlayer(context);
+        }
+
+        return INSTANCE;
+    }
+
+    /**
+     * See <a href="http://stackoverflow.com/a/8568304">this stackoverflow answer</a> for reference.
+     */
+    public void playNotificationSound() {
+        try {
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Ringtone ringtone = RingtoneManager.getRingtone(this.applicationContext, notification);
+            ringtone.play();
+
+            // waiting some brief amount of time before stopping the sound:
+            long duration = 1000,
+                    startTime = System.currentTimeMillis(), stopTime = startTime + duration;
+            do {
+                startTime = System.currentTimeMillis();
+            } while (ringtone.isPlaying() && startTime < stopTime);
+            ringtone.stop();
+
+        } catch (Exception e) {
+            ErrorHandler.handle(e);
+        }
+    }
+
+    /**
+     * See <a href="http://stackoverflow.com/a/8568304">this stackoverflow answer</a> for reference.
+     */
+    public void playAlarmSound() {
+        try {
+            Uri alarm = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+            Ringtone ringtone = RingtoneManager.getRingtone(this.applicationContext, alarm);
+            ringtone.play();
+
+            // waiting some brief amount of time before stopping the sound:
+            long duration = 1000,
+                    startTime = System.currentTimeMillis(), stopTime = startTime + duration;
+            do {
+                startTime = System.currentTimeMillis();
+            } while (ringtone.isPlaying() && startTime < stopTime);
+            ringtone.stop();
+
+        } catch (Exception e) {
+            ErrorHandler.handle(e);
+        }
+    }
+}
