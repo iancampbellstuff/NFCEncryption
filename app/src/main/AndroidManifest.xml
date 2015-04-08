@@ -12,6 +12,13 @@
         android:required="true" />
     <uses-permission android:name="android.permission.NFC" />
 
+    <!--
+        About the "ic_launcher" (android:icon) used for this application:
+
+        i. This icon was found at:  http://findicons.com/icon/177248/unlock_yellow?id=177475
+        ii. This icon is under a "Creative Commons Attribution No Derivatives" license
+        ii. This icon was created by Jack Cai, attributed to:  http://www.doublejdesign.co.uk/
+    -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
