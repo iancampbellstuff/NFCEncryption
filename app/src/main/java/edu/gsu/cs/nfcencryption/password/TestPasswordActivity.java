@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
+import android.os.Bundle;
+import android.widget.TextView;
 
 import java.util.Arrays;
 
@@ -60,6 +62,20 @@ public final class TestPasswordActivity extends PasswordActivity
                     "The NFC device has a stored password, but the local database is empty!",
                     "updatePassword() must be called before passwordMatches()."
             ));
+        }
+    }
+
+    /**
+     *
+     * @param savedInstanceState
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (!this.isFinished) {
+            // setting the "tap nfc device" text here:
+            ((TextView)this.findViewById(R.id.tvStart)).setText(R.string.tap_nfc_device_to_test);
         }
     }
 
@@ -146,16 +162,5 @@ public final class TestPasswordActivity extends PasswordActivity
         } catch (Throwable e) {
             this.onReadFail(e);
         }
-    }
-
-    /**
-     *
-     * @param e
-     */
-    @Override
-    public void onReadFail(Throwable e) {
-        ErrorHandler.handle(e.getLocalizedMessage());
-        SfxPlayer.getInstanceOf(this).playAlarmSound();
-        this.setFinishedLayout(false, e.getLocalizedMessage());
     }
 }

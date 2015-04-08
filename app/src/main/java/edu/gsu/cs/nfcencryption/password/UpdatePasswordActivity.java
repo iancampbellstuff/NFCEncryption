@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
+import android.os.Bundle;
+import android.widget.TextView;
 
 import java.util.UUID;
 
@@ -79,6 +81,20 @@ public final class UpdatePasswordActivity extends PasswordActivity
     }
 
     /**
+     *
+     * @param savedInstanceState
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (!this.isFinished) {
+            // setting the "tap nfc device" text here:
+            ((TextView)this.findViewById(R.id.tvStart)).setText(R.string.tap_nfc_device_to_update);
+        }
+    }
+
+    /**
      * This method is called by the <strong>Android OS</strong> when an <strong>NFC</strong> device
      * is detected.
      *
@@ -125,16 +141,5 @@ public final class UpdatePasswordActivity extends PasswordActivity
     public void onWriteSuccess() {
         SfxPlayer.getInstanceOf(this).playNotificationSound();
         this.setFinishedLayout(true, R.string.password_update_successful);
-    }
-
-    /**
-     *
-     * @param e
-     */
-    @Override
-    public void onWriteFail(Throwable e) {
-        ErrorHandler.handle(e.getLocalizedMessage());
-        SfxPlayer.getInstanceOf(this).playAlarmSound();
-        this.setFinishedLayout(false, e.getLocalizedMessage());
     }
 }

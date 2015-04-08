@@ -11,11 +11,15 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NfcA;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.widget.TextView;
+
+import java.io.IOException;
 
 import edu.gsu.cs.nfcencryption.R;
 import edu.gsu.cs.nfcencryption.database.LocalDatabase;
 import edu.gsu.cs.nfcencryption.util.ErrorHandler;
+import edu.gsu.cs.nfcencryption.util.SfxPlayer;
 
 /**
  * See <a href="https://github.com/android/platform_development/blob/master/samples/AndroidBeamDemo/src/com/example/android/beam/Beam.java">
@@ -255,6 +259,52 @@ abstract class PasswordActivity extends Activity {
      */
     private void disableForegroundDispatch() {
         this.nfcAdapter.disableForegroundDispatch(this);
+    }
+
+    /**
+     * Subclasses that implement <code>NDEFReaderListener</code> will use this implementation,
+     * unless overridden.
+     *
+     * @param e
+     */
+    public void onReadFail(Throwable e) {
+        SfxPlayer.getInstanceOf(this).playAlarmSound();
+        String errorMessage = e.getLocalizedMessage();
+
+        if (TextUtils.isEmpty(errorMessage)) {
+            ErrorHandler.handle(e);
+            this.setFinishedLayout(false, e instanceof IOException
+                            ? R.string.nfc_connection_interrupted
+                            : R.string.error_occurred
+            );
+
+        } else {
+            ErrorHandler.handle(e.getLocalizedMessage());
+            this.setFinishedLayout(false, e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * Subclasses that implement <code>NDEFWriterListener</code> will use this implementation,
+     * unless overridden.
+     *
+     * @param e
+     */
+    public void onWriteFail(Throwable e) {
+        SfxPlayer.getInstanceOf(this).playAlarmSound();
+        String errorMessage = e.getLocalizedMessage();
+
+        if (TextUtils.isEmpty(errorMessage)) {
+            ErrorHandler.handle(e);
+            this.setFinishedLayout(false, e instanceof IOException
+                            ? R.string.nfc_connection_interrupted
+                            : R.string.error_occurred
+            );
+
+        } else {
+            ErrorHandler.handle(e.getLocalizedMessage());
+            this.setFinishedLayout(false, e.getLocalizedMessage());
+        }
     }
 
     /**
