@@ -1,11 +1,13 @@
 package edu.gsu.cs.nfcencryption.password;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
+import android.view.WindowManager;
 
 import edu.gsu.cs.nfcencryption.R;
 
@@ -15,6 +17,11 @@ import edu.gsu.cs.nfcencryption.R;
  * @author Andrew J. Rutherford
  */
 final class NdefWriterTask extends AsyncTask<Tag, Void, Void> {
+
+    /**
+     * Used to display a spinning circle as the task executes.
+     */
+    private final ProgressDialog progressDialog;
 
     /**
      * This is used to listen for <code>NfcAsyncTask</code> to be done, and to then execute whatever
@@ -43,6 +50,7 @@ final class NdefWriterTask extends AsyncTask<Tag, Void, Void> {
     NdefWriterTask(PasswordActivity.NdefWriterListener delegate, char[] password) {
         this.delegate = delegate;
         this.password = password;
+        this.progressDialog = new ProgressDialog((Activity)delegate);
     }
 
     /**
@@ -67,6 +75,28 @@ final class NdefWriterTask extends AsyncTask<Tag, Void, Void> {
         System.arraycopy(passwordBytes, 0, payload, 1 + languageLength, passwordLength);
 
         return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], payload);
+    }
+
+    /**
+     * Starting a progressbar here, to make the calling <code>Activity</code> wait until
+     * <code>doInBackground(Search...)</code> is done.
+     */
+    @Override
+    protected void onPreExecute() {
+        // in case this instance is re-used:
+        this.throwable = null;
+
+        // showing the progressbar here:
+        try {
+            this.progressDialog.show();
+
+            // show() must be called before setting the content view:
+            this.progressDialog.setContentView(R.layout.progressdialog_spinning_circle);
+            this.progressDialog.setCancelable(false);
+
+        } catch (WindowManager.BadTokenException e) {
+            this.throwable = e;
+        }
     }
 
     /**
@@ -107,8 +137,9 @@ final class NdefWriterTask extends AsyncTask<Tag, Void, Void> {
 
         } finally {
             try {
-                ndef.close();
-
+                if (ndef != null && ndef.isConnected()) {
+                    ndef.close();
+                }
             } catch (Throwable e) {
                 this.throwable = e;
             }
@@ -134,8 +165,15 @@ final class NdefWriterTask extends AsyncTask<Tag, Void, Void> {
                 this.delegate.onWriteSuccess();
             }
         } catch (Throwable e) {
+            // ensuring that the progressbar stops before returning to the main UI:
+            this.progressDialog.dismiss();
+
             this.delegate.onWriteFail(e);
             this.cancel(true);
+        } finally {
+            if (this.progressDialog.isShowing()) {
+                this.progressDialog.dismiss();
+            }
         }
     }
 }

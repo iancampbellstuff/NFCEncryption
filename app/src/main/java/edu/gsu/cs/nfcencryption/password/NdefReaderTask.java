@@ -1,12 +1,14 @@
 package edu.gsu.cs.nfcencryption.password;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.view.WindowManager;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -21,6 +23,11 @@ import edu.gsu.cs.nfcencryption.R;
  * @author Andrew J. Rutherford
  */
 final class NdefReaderTask extends AsyncTask<Tag, Void, String> {
+
+    /**
+     * Used to display a spinning circle as the task executes.
+     */
+    private final ProgressDialog progressDialog;
 
     /**
      * This is used to listen for <code>NfcAsyncTask</code> to be done, and to then execute whatever
@@ -42,6 +49,7 @@ final class NdefReaderTask extends AsyncTask<Tag, Void, String> {
      */
     NdefReaderTask(PasswordActivity.NdefReaderListener delegate) {
         this.delegate = delegate;
+        this.progressDialog = new ProgressDialog((Activity)delegate);
     }
 
     /**
@@ -81,6 +89,28 @@ final class NdefReaderTask extends AsyncTask<Tag, Void, String> {
     }
 
     /**
+     * Starting a progressbar here, to make the calling <code>Activity</code> wait until
+     * <code>doInBackground(Search...)</code> is done.
+     */
+    @Override
+    protected void onPreExecute() {
+        // in case this instance is re-used:
+        this.throwable = null;
+
+        // showing the spinning circle here:
+        try {
+            this.progressDialog.show();
+
+            // show() must be called before setting the content view:
+            this.progressDialog.setContentView(R.layout.progressdialog_spinning_circle);
+            this.progressDialog.setCancelable(false);
+
+        } catch (WindowManager.BadTokenException e) {
+            this.throwable = e;
+        }
+    }
+
+    /**
     *
      * @param params
      * @return
@@ -117,8 +147,9 @@ final class NdefReaderTask extends AsyncTask<Tag, Void, String> {
 
         } finally {
             try {
-                ndef.close();
-
+                if (ndef != null && ndef.isConnected()) {
+                    ndef.close();
+                }
             } catch (Throwable e) {
                 this.throwable = e;
             }
@@ -156,8 +187,15 @@ final class NdefReaderTask extends AsyncTask<Tag, Void, String> {
                 this.delegate.onReadSuccess(nfcPassword);
             }
         } catch (Throwable e) {
+            // ensuring that the progressbar stops before returning to the main UI:
+            this.progressDialog.dismiss();
+
             this.delegate.onReadFail(e);
             this.cancel(true);
+        } finally {
+            if (this.progressDialog.isShowing()) {
+                this.progressDialog.dismiss();
+            }
         }
     }
 }
