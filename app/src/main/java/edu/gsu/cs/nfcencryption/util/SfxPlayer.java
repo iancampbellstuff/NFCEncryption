@@ -55,15 +55,19 @@ public final class SfxPlayer {
             new Thread() {
                 @Override
                 public void run() {
-                    ringtone.play();
+                    try {
+                        ringtone.play();
 
-                    // waiting some brief amount of time before stopping the sound:
-                    long duration = 1000,
-                            startTime = System.currentTimeMillis(), stopTime = startTime + duration;
-                    do {
-                        startTime = System.currentTimeMillis();
-                    } while (ringtone.isPlaying() && startTime < stopTime);
-                    ringtone.stop();
+                        // waiting some brief amount of time before stopping the sound:
+                        long duration = 1000,
+                                startTime = System.currentTimeMillis(), stopTime = startTime + duration;
+                        do {
+                            startTime = System.currentTimeMillis();
+                        } while (ringtone.isPlaying() && startTime < stopTime);
+
+                    } finally {
+                        ringtone.stop();
+                    }
                 }
             }.start();
         }
